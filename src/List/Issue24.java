@@ -16,7 +16,12 @@ public class Issue24 {
         new Issue24().swapPairs(node0);
     }
 
-    public ListNode swapPairs(ListNode head) {
+    /**
+     * 不带虚拟头节点
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs1(ListNode head) {
 
         ListNode first = head;
         ListNode second = null;
@@ -39,5 +44,47 @@ public class Issue24 {
             first = tmp;
         }
         return head;
+    }
+
+    /**
+     * 带虚拟头节点
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs2(ListNode head){
+        ListNode dummyHead = new ListNode(-1, null);
+        dummyHead.next = head;
+
+        ListNode first = null;
+        ListNode second = null;
+        ListNode cur = dummyHead;
+
+        while(cur.next != null && cur.next.next != null){
+            first = cur.next;
+            second = cur.next.next;
+            ListNode tmp = second.next;
+            cur.next = second;
+            second.next = first;
+            first.next = tmp;
+            cur = first;
+        }
+
+        return dummyHead.next;
+    }
+
+    /**
+     * 带头结点的递归解法
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode tmp = head.next;
+        head.next = tmp.next;
+        tmp.next = head;
+        head.next = swapPairs(head.next);
+        return tmp;
     }
 }
